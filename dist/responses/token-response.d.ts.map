@@ -1,0 +1,1 @@
+{"version":3,"file":"token-response.d.ts","sourceRoot":"","sources":["../../src/responses/token-response.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,WAAW,aAAa;IAE1B;;OAEG;IACH,YAAY,EAAE,MAAM,CAAC;IAErB;;OAEG;IACH,UAAU,EAAE,MAAM,CAAC;IAEnB;;OAEG;IACH,kBAAkB,EAAE,MAAM,CAAC;IAE3B;;OAEG;IACH,aAAa,EAAE,MAAM,CAAC;CAEzB"}

@@ -1,7 +1,6 @@
 homebridge-test-config/
 
 # Ignore compiled code
-dist
 
 # ------------- Defaults ------------- #
 
@@ -88,7 +87,6 @@ web_modules/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/

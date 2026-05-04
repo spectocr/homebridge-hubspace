@@ -1,0 +1,1 @@
+{"version":3,"file":"account-response.d.ts","sourceRoot":"","sources":["../../src/responses/account-response.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,WAAW,eAAe;IAC5B,aAAa,EAAE;QACX,OAAO,EAAE;YACL,SAAS,EAAE,MAAM,CAAC;SACrB,CAAC;KACL,EAAE,CAAC;CACP"}

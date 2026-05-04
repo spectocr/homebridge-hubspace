@@ -1,0 +1,1 @@
+{"version":3,"file":"http-client-factory.js","sourceRoot":"","sources":["../../src/api/http-client-factory.ts"],"names":[],"mappings":";;;;;;AACA,kDAA0B;AAC1B,iDAAgD;AAEhD;;;;GAIG;AACH,SAAgB,qCAAqC,CAAC,MAAiD;IACnG,MAAM,MAAM,GAAG,eAAK,CAAC,MAAM,CAAC,MAAM,CAAC,CAAC;IAEpC,MAAM,CAAC,YAAY,CAAC,OAAO,CAAC,GAAG,CAAC,6BAAc,CAAC,CAAC;IAEhD,OAAO,MAAM,CAAC;AAClB,CAAC;AAND,sFAMC"}
