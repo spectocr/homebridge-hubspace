@@ -29,7 +29,7 @@ export class HubspacePlatform implements DynamicPlatformPlugin {
             return;
         }
         // Init token service as singleton
-        TokenService.init(this.config.username, this.config.password, this.api.user.storagePath());
+        TokenService.init(this.config.username, this.config.password, this.api.user.storagePath(), this.log);
         // Configure private services
         this._discoveryService = new DiscoveryService(this);
         // Configure global services

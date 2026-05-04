@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Logger } from 'homebridge';
 import { TokenResponse } from '../responses/token-response';
 import { Endpoints } from '../api/endpoints';
 
@@ -24,17 +25,13 @@ export class TokenService{
     private _refreshToken?: string;
     private _refreshTokenExpiration?: Date;
     private readonly _tokenFilePath: string;
+    private _authPromise?: Promise<boolean>;
 
-    /**
-     * Creates a new instance of token service
-     * @param _username Account username
-     * @param _password Account password
-     * @param storagePath Homebridge storage path for persisting refresh token
-     */
     private constructor(
         private readonly _username: string,
         private readonly _password: string,
-        storagePath: string) {
+        storagePath: string,
+        private readonly _log: Logger) {
         this._tokenFilePath = path.join(storagePath, '.hubspace-token.json');
         this.loadPersistedToken();
     }
@@ -53,8 +50,8 @@ export class TokenService{
      * @param _password Account password
      * @param storagePath Homebridge storage path for persisting refresh token
      */
-    public static init(username: string, password: string, storagePath: string): void{
-        TokenService._instance = new TokenService(username, password, storagePath);
+    public static init(username: string, password: string, storagePath: string, log: Logger): void{
+        TokenService._instance = new TokenService(username, password, storagePath, log);
     }
 
     public async getToken(): Promise<string | undefined>{
@@ -70,16 +67,23 @@ export class TokenService{
     }
 
     private async authenticate(): Promise<boolean>{
-        // If nothing is expired then no need to run authentication again
         if(!this.isAccessTokenExpired() && !this.isRefreshTokenExpired()) return true;
 
-        const tokenResponse = await this.getTokenFromRefreshToken() || await this.getTokenFromCredentials();
+        if(this._authPromise) return this._authPromise;
 
-        this.setTokens(tokenResponse);
+        this._authPromise = (async () => {
+            const tokenResponse = await this.getTokenFromRefreshToken() || await this.getTokenFromCredentials();
+            this.setTokens(tokenResponse);
+            if(!tokenResponse){
+                this._log.error('Authentication failed — check your username and password.');
+                return false;
+            }
+            return true;
+        })().finally(() => {
+            this._authPromise = undefined;
+        });
 
-        if(!tokenResponse) return false;
-
-        return true;
+        return this._authPromise;
     }
 
     private async getTokenFromRefreshToken(): Promise<TokenResponse | undefined>{
@@ -97,6 +101,7 @@ export class TokenService{
 
             return response.status === 200 ? response.data : undefined;
         }catch(exception){
+            this._log.debug('Refresh token failed, falling back to credentials.');
             return undefined;
         }
     }
@@ -114,10 +119,10 @@ export class TokenService{
 
             return response.status === 200 ? response.data : undefined;
         }catch(exception){
+            this._log.error('Credential authentication failed.');
             return undefined;
         }
     }
-
 
     /**
      * Sets tokens to new values

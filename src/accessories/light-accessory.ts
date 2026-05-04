@@ -325,16 +325,16 @@ export class LightAccessory extends HubspaceAccessory{
         this.deviceService.setValue(this.device.deviceId, func.values[0].deviceValues[0].key, value);
     }
 
-    private throwErrorIfNullOrUndefined(value: any, message: string): void {
-        // If the value is not defined then show 'Not Responding'
+    private throwErrorIfNullOrUndefined(value: unknown, message: string): void {
         if (isNullOrUndefined(value)) {
+            this.log.error(`${this.device.name}: ${message}`);
             throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
         }
     }
 
-    private throwErrorIfNullOrUndefinedInt(value: any, message: string): void {
-        // If the value is not defined then show 'Not Responding'
+    private throwErrorIfNullOrUndefinedInt(value: unknown, message: string): void {
         if (isNullOrUndefined(value) || value === -1) {
+            this.log.error(`${this.device.name}: ${message}`);
             throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
         }
     }
